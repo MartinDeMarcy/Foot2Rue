@@ -1,7 +1,0 @@
-Version 1.0
-
-	- Authentification utilisateur
-	- Possibilité de créer des équipes
-	- Trouver des terrains
-	- Ajouter des terrains
-	- emploi du temps 
