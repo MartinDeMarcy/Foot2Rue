@@ -29,6 +29,18 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         controller: 'AppCtrl'
     })
 
+    .state('register', {
+        url: '/register',
+        templateUrl: 'templates/register.html',
+        controller: 'RegisterCtrl'
+    })
+
+    .state('login', {
+        url: '/login',
+        templateUrl: 'templates/login.html',
+        controller: 'LoginCtrl'
+    })
+
     .state('app.lists', {
         url: '/lists',
         views: {
@@ -64,7 +76,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         views: {
             'menuContent': {
                 templateUrl: 'templates/profil.html',
-                controller: 'profilCtrl'
+                controller: 'ProfilCtrl'
             }
         }
     })
@@ -80,6 +92,9 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     })
     ;
 
-    // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/app/profil');
+    // Thanks to Ben Noblet!
+  $urlRouterProvider.otherwise(function ($injector, $location) {
+    var $state = $injector.get("$state");
+    $state.go("app.profil");
+  });
 });

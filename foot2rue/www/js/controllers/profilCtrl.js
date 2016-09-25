@@ -1,4 +1,11 @@
-﻿app.controller('profilCtrl', function ($scope, $stateParams, ionicMaterialInk) {
+﻿app.controller('ProfilCtrl', function ($scope, $state, ionicMaterialInk) {
+	firebase.auth().onAuthStateChanged(function(user) {
+	  if (user) {
+	    console.log(user);
+	  } else {
+	    console.log('Not log in');
+	  }
+	});
     //ionic.material.ink.displayEffect();
     ionicMaterialInk.displayEffect();
 
