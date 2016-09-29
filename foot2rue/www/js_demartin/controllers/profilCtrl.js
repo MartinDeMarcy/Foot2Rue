@@ -1,11 +1,14 @@
-﻿app.controller('ProfilCtrl', function ($scope, $state, ionicMaterialInk) {
-	firebase.auth().onAuthStateChanged(function(user) {
-	  if (user) {
-	    console.log(user);
-	  } else {
-	    console.log('Not log in');
-	  }
-	});
+﻿app.controller('ProfilCtrl', function ($scope, $state, ionicMaterialInk, $location) {
+	user = localStorage.getItem('profile');
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        firebase.auth().signInWithEmailAndPassword(user.email, user.password).then(function () {
+          console.log("User is signed in.");
+        });
+      } 
+      else
+        console.log("No user is signed in.");
+    });
     //ionic.material.ink.displayEffect();
     ionicMaterialInk.displayEffect();
 

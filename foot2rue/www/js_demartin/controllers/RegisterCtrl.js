@@ -10,7 +10,7 @@ app.controller('RegisterCtrl', function ($scope, AuthService, $location) {
 		p = user.password;
 		firebase.auth().createUserWithEmailAndPassword(e, p).then(function() {
 			var userId = firebase.auth().currentUser.uid;
-			console.log(userId);
+			localStorage.setItem('profile', JSON.stringify(user));
 			firebase.database().ref('users/' + userId).set({
 				id: userId,
 			    last_name: user.last_name,

@@ -1,6 +1,16 @@
-﻿app.controller('AppCtrl', function ($scope, $ionicModal, $ionicPopover, $timeout) {
+﻿app.controller('AppCtrl', function ($scope, $ionicModal, $ionicPopover, $timeout, $location) {
     // Form data for the login modal
     $scope.loginData = {};
+    user = localStorage.getItem('profile');
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        firebase.auth().signInWithEmailAndPassword(user.email, user.password).then(function () {
+          console.log("User is signed in.");
+        });
+      } 
+      else
+        console.log("No user is signed in.");
+    });
 
     var navIcons = document.getElementsByClassName('ion-navicon');
     for (var i = 0; i < navIcons.length; i++) {
@@ -29,4 +39,12 @@
     $scope.$on('$destroy', function () {
         $scope.popover.remove();
     });
+    $scope.signOut = function() {
+    firebase.auth().signOut().then(function() {
+        console.log("asa");
+      $location.path( "#/login");
+    }, function(error) {
+      console.log(error);
+    });
+  };
 });
