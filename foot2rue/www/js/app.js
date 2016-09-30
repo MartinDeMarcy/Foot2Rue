@@ -104,6 +104,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
         }
     })
 
+    .state('app.register', {
+        url: '/register',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/register.html',
+                controller: 'RegisterCtrl'
+            },
+            'fabContent': {
+                template: ''
+            }
+        }
+    })
+
     .state('app.profile', {
         url: '/profile',
         views: {

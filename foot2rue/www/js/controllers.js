@@ -87,12 +87,44 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('LoginCtrl', function($scope, $timeout, $stateParams, ionicMaterialInk) {
+.controller('LoginCtrl', function($scope, $timeout, $stateParams, ionicMaterialInk, $state) {
     $scope.$parent.clearFabs();
     $timeout(function() {
         $scope.$parent.hideHeader();
     }, 0);
     ionicMaterialInk.displayEffect();
+
+    $scope.login = function(data) {
+        firebase.auth().signInWithEmailAndPassword(data.email, data.password).then(function () {
+            $state.go('app.profile');
+        }).catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          alert(error.message);
+        });
+    };
+})
+
+.controller('RegisterCtrl', function($scope, $timeout, $stateParams, ionicMaterialInk, $state) {
+    $scope.create = function(user) {
+        firebase.auth().createUserWithEmailAndPassword(user.email, user.password).then(function() {
+            var userId = firebase.auth().currentUser.uid;
+            localStorage.setItem('profile', JSON.stringify(user));
+            firebase.database().ref('users/' + userId).set({
+                id: userId,
+                last_name: user.last_name,
+                first_name: user.first_name,
+                email: user.email,
+                citu: user.city,
+                cp: user.cp
+            });
+            $state.go('app.login');
+        }).catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log(error);
+        });
+    };
 })
 
 .controller('FriendsCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion) {
