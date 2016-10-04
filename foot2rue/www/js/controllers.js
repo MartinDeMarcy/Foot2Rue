@@ -3,7 +3,7 @@
 
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $ionicPopover, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $ionicPopover, $timeout, $state) {
     // Form data for the login modal
     $scope.loginData = {};
     $scope.isExpanded = false;
@@ -20,6 +20,15 @@ angular.module('starter.controllers', [])
     ////////////////////////////////////////
     // Layout Methods
     ////////////////////////////////////////
+
+    $scope.signOut = function() {
+        firebase.auth().signOut().then(function() {
+          console.log("Signed out");
+          $state.go("login");
+        }, function(error) {
+          console.log("Error on signOut")
+        });
+    }
 
     $scope.hideNavBar = function() {
         document.getElementsByTagName('ion-nav-bar')[0].style.display = 'none';
@@ -88,11 +97,6 @@ angular.module('starter.controllers', [])
 })
 
 .controller('LoginCtrl', function($scope, $timeout, $stateParams, ionicMaterialInk, $state) {
-    $scope.$parent.clearFabs();
-    $timeout(function() {
-        $scope.$parent.hideHeader();
-    }, 0);
-    ionicMaterialInk.displayEffect();
 
     $scope.login = function(data) {
         firebase.auth().signInWithEmailAndPassword(data.email, data.password).then(function () {
@@ -103,6 +107,29 @@ angular.module('starter.controllers', [])
           alert(error.message);
         });
     };
+
+    $scope.signWithGoogle = function() {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider).then(function(result) {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          var token = result.credential.accessToken;
+          // The signed-in user info.
+          var user = result.user;
+          console.log(user);
+          $state.go('app.profile');
+          // ...
+        }).catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // The email of the user's account used.
+          var email = error.email;
+          // The firebase.auth.AuthCredential type that was used.
+          var credential = error.credential;
+          // ...
+        });
+    }
+
 })
 
 .controller('RegisterCtrl', function($scope, $timeout, $stateParams, ionicMaterialInk, $state) {
@@ -118,7 +145,7 @@ angular.module('starter.controllers', [])
                 citu: user.city,
                 cp: user.cp
             });
-            $state.go('app.login');
+            $state.go('login');
         }).catch(function(error) {
           var errorCode = error.code;
           var errorMessage = error.message;
@@ -148,6 +175,15 @@ angular.module('starter.controllers', [])
 
 .controller('ProfileCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
     // Set Header
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        var dbRef = firebase.database().ref('users/' + user.uid);
+        dbRef.on('value', function(snap) {
+            $scope.data = snap.val();
+        })
+      } else {
+          }
+    });
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
     $scope.isExpanded = false;
