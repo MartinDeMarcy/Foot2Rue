@@ -97,15 +97,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
         controller: 'LoginCtrl'
     })
 
-    .state('app.register', {
+    .state('register', {
         url: '/register',
+        templateUrl: 'templates/register.html',
+        controller: 'RegisterCtrl'
+    })
+    
+    .state('app.player', {
+        url: "/player/:playerId",
         views: {
             'menuContent': {
-                templateUrl: 'templates/register.html',
-                controller: 'RegisterCtrl'
-            },
-            'fabContent': {
-                template: ''
+                templateUrl: 'templates/player.html',
+                controller: 'PlayerCtrl'
             }
         }
     })
@@ -116,14 +119,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
             'menuContent': {
                 templateUrl: 'templates/profile.html',
                 controller: 'ProfileCtrl'
-            },
-            'fabContent': {
-                template: '<button id="fab-profile" class="button button-fab button-fab-bottom-right button-energized-900"><i class="icon ion-plus"></i></button>',
-                controller: function ($timeout) {
-                    /*$timeout(function () {
-                        document.getElementById('fab-profile').classList.toggle('on');
-                    }, 800);*/
-                }
             }
         }
     })

@@ -28,7 +28,7 @@ angular.module('starter.controllers', [])
         }, function(error) {
           console.log("Error on signOut")
         });
-    }
+    };
 
     $scope.hideNavBar = function() {
         document.getElementsByTagName('ion-nav-bar')[0].style.display = 'none';
@@ -128,34 +128,49 @@ angular.module('starter.controllers', [])
           var credential = error.credential;
           // ...
         });
-    }
+    };
 
 })
 
 .controller('RegisterCtrl', function($scope, $timeout, $stateParams, ionicMaterialInk, $state) {
     $scope.create = function(user) {
-        firebase.auth().createUserWithEmailAndPassword(user.email, user.password).then(function() {
-            var userId = firebase.auth().currentUser.uid;
-            localStorage.setItem('profile', JSON.stringify(user));
-            firebase.database().ref('users/' + userId).set({
-                id: userId,
-                last_name: user.last_name,
-                first_name: user.first_name,
-                email: user.email,
-                citu: user.city,
-                cp: user.cp
+        if (user.email) {
+            firebase.auth().createUserWithEmailAndPassword(user.email, user.password).then(function() {
+                var userId = firebase.auth().currentUser.uid;
+                localStorage.setItem('profile', JSON.stringify(user));
+                firebase.database().ref('users/' + userId).set({
+                    id: userId,
+                    last_name: user.last_name,
+                    first_name: user.first_name,
+                    nick: user.nick,
+                    email: user.email,
+                    city: user.city,
+                    cp: user.cp
+                });
+                $state.go('login');
+            }).catch(function(error) {
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              console.log(error);
             });
-            $state.go('login');
-        }).catch(function(error) {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          console.log(error);
-        });
+        }
+        else {
+            console.log("error");
+        }
     };
 })
 
 .controller('FriendsCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion) {
     // Set Header
+    $scope.users = [];
+    var dbRef = firebase.database().ref('users');
+    dbRef.on('value', function(snap) {
+        angular.forEach(snap.val(), function(value, key) {
+            var content = value;
+            $scope.users.push(content);
+        });
+    });
+    
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
     $scope.$parent.setHeaderFab('left');
@@ -180,31 +195,63 @@ angular.module('starter.controllers', [])
         var dbRef = firebase.database().ref('users/' + user.uid);
         dbRef.on('value', function(snap) {
             $scope.data = snap.val();
-        })
-      } else {
-          }
+        });
+        $scope.$parent.showHeader();
+        $scope.$parent.clearFabs();
+        $scope.isExpanded = false;
+        $scope.$parent.setExpanded(false);
+        $scope.$parent.setHeaderFab(false);
+
+        // Set Motion
+        $timeout(function() {
+            ionicMaterialMotion.slideUp({
+                selector: '.slide-up'
+            });
+        }, 300);
+
+        $timeout(function() {
+            ionicMaterialMotion.fadeSlideInRight({
+                startVelocity: 3000
+            });
+        }, 700);
+
+        // Set Ink
+        ionicMaterialInk.displayEffect();
+      }
     });
-    $scope.$parent.showHeader();
-    $scope.$parent.clearFabs();
-    $scope.isExpanded = false;
-    $scope.$parent.setExpanded(false);
-    $scope.$parent.setHeaderFab(false);
+    
+})
 
-    // Set Motion
-    $timeout(function() {
-        ionicMaterialMotion.slideUp({
-            selector: '.slide-up'
+.controller('PlayerCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        var dbRef = firebase.database().ref('users/' + $stateParams.playerId);
+        dbRef.on('value', function(snap) {
+            $scope.data = snap.val();
         });
-    }, 300);
+        $scope.$parent.showHeader();
+        $scope.$parent.clearFabs();
+        $scope.isExpanded = false;
+        $scope.$parent.setExpanded(false);
+        $scope.$parent.setHeaderFab(false);
 
-    $timeout(function() {
-        ionicMaterialMotion.fadeSlideInRight({
-            startVelocity: 3000
-        });
-    }, 700);
+        // Set Motion
+        $timeout(function() {
+            ionicMaterialMotion.slideUp({
+                selector: '.slide-up'
+            });
+        }, 300);
 
-    // Set Ink
-    ionicMaterialInk.displayEffect();
+        $timeout(function() {
+            ionicMaterialMotion.fadeSlideInRight({
+                startVelocity: 3000
+            });
+        }, 700);
+
+        // Set Ink
+        ionicMaterialInk.displayEffect();
+        }
+    });
 })
 
 .controller('ActivityCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
