@@ -91,28 +91,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
         }
     })
 
-    .state('app.login', {
+    .state('login', {
         url: '/login',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/login.html',
-                controller: 'LoginCtrl'
-            },
-            'fabContent': {
-                template: ''
-            }
-        }
+        templateUrl: 'templates/login.html',
+        controller: 'LoginCtrl'
     })
 
-    .state('app.register', {
+    .state('register', {
         url: '/register',
+        templateUrl: 'templates/register.html',
+        controller: 'RegisterCtrl'
+    })
+    
+    .state('app.player', {
+        url: "/player/:playerId",
         views: {
             'menuContent': {
-                templateUrl: 'templates/register.html',
-                controller: 'RegisterCtrl'
-            },
-            'fabContent': {
-                template: ''
+                templateUrl: 'templates/player.html',
+                controller: 'PlayerCtrl'
             }
         }
     })
@@ -123,19 +119,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
             'menuContent': {
                 templateUrl: 'templates/profile.html',
                 controller: 'ProfileCtrl'
-            },
-            'fabContent': {
-                template: '<button id="fab-profile" class="button button-fab button-fab-bottom-right button-energized-900"><i class="icon ion-plus"></i></button>',
-                controller: function ($timeout) {
-                    /*$timeout(function () {
-                        document.getElementById('fab-profile').classList.toggle('on');
-                    }, 800);*/
-                }
             }
         }
     })
     ;
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/app/login');
+    $urlRouterProvider.otherwise('/login');
 });
