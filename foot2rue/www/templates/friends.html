@@ -1,9 +1,13 @@
 <ion-view view-title="Joueurs">
     <ion-content ng-class="{expanded:isExpanded}">
+        <label class="item item-input">
+            <i class="icon ion-search placeholder-icon"></i>
+            <input type="search" placeholder="Rechercher un joueur">
+        </label>
         <div class="content has-header">
             <div class="list" ng-repeat="user in users">
                 <a ui-sref="app.player({playerId: user.id})" class="item item-avatar item-icon-right">
-                    <img src="img/jon-snow.jpg">
+                    <img ng-src="https://firebasestorage.googleapis.com/v0/b/foot2rue-2c890.appspot.com/o/profil%2FuwmLTU8ZRpaJfU0tE1hdWDzzUkV2?alt=media&token=6f1b8a11-aa25-4808-a583-6345d906ae96">
                     <h2>{{ user.first_name }} {{ user.last_name }}</h2>
                     <p>{{ user.nick }}</p> 
                     <i class="icon ion-plus"></i>

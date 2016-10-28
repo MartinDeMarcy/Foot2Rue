@@ -2,42 +2,72 @@
     <ion-content ng-class="{expanded:$scope.isExpanded}">
         <div class="hero slide-up" style="background-image: url('img/profile-bg.jpg');">
             <div class="content">
-                <div class="avatar" style="background-image: url('img/daenerys.jpg');"></div>
+                <div class="avatar"><img ng-src="" alt="photo de profile" class="imgProfil"></div>
                 <h3><a class="light">{{ data.first_name}} {{ data.last_name }}</a></h3>
                 <h4>{{ data.nick }}</h4>
             </div>
         </div>
         <div class="tabs tabs-dark tabs-icon-top static">
-            <a ui-sref="app.activity" class="tab-item capitaine">
+            <a ng-click="changeView(0)" class="tab-item capitaine">
                 <i class="icon ion-arrow-graph-up-right"></i> Gestion de l'équipe
             </a>
-            <a ui-sref="app.friends" class="tab-item">
-                <i class="icon ion-android-people"></i> Formation
+            <a ng-click="changeView(1)" class="tab-item">
+                <i class="icon ion-android-people" ></i> Formation
             </a>
-            <a ui-sref="app.gallery" class="tab-item">
+            <a ng-click="changeView(2)" class="tab-item">
                 <i class="icon ion-images"></i> Parametre du compte
             </a>
-            <a ui-sref="app.gallery" class="tab-item">
+            <a ng-click="changeView(3)" class="tab-item">
                 <i class="icon ion-chatbubbles"></i> Chat d'équipe
             </a>
         </div>
-        <h4 class="content padding double-padding-x">Formation</h4>
-        <div class="list animate-fade-slide-in-right">
-            <a ui-sref="app.friends" class="item item-avatar item-icon-right">
-                <img src="img/jon-snow.jpg">
-                <h2>Jon Snow</h2>
-                <p>Da illest illegitimate</p>
-            </a>
-            <a ui-sref="app.friends" class="item item-avatar item-icon-right">
-                <img src="img/sansa.jpg">
-                <h2>Sansa Stark</h2>
-                <p>&amp; Joffrey <strike>sitting</strike> sat in a tree</p>
-            </a>
-            <a ui-sref="app.friends" class="item item-avatar item-icon-right">
-                <img src="img/tyrion.jpg">
-                <h2>Tyrion Lannister</h2>
-                <p>B.A.M.F. imp</p>
-            </a>
+
+         <div ng-hide="pannels[0]">
+            <h4 class="content padding double-padding-x">Gestion de l'équipe</h4>
+        </div>
+
+        <div ng-hide="pannels[1]">
+            <h4 class="content padding double-padding-x">Formation</h4>
+            <div class="list animate-fade-slide-in-right">
+                <a ui-sref="app.friends" class="item item-avatar item-icon-right">
+                    <img src="img/jon-snow.jpg">
+                    <h2>Jon Snow</h2>
+                    <p>Da illest illegitimate</p>
+                </a>
+            </div>
+        </div>
+
+        <div ng-hide="pannels[2]">
+            <h4 class="content padding double-padding-x">Paramètres du compte</h4>
+            <div class="list">
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Prénom</span>
+                    <input type="text" placeholder="Prénom" ng-model="data.first_name">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Nom</span>
+                    <input type="text" placeholder="Nom" ng-model="data.last_name">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Surnom</span>
+                    <input type="text" placeholder="Surnom" ng-model="data.nick">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Ville</span>
+                    <input type="text" placeholder="Ville" ng-model="data.city">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Code Postal</span>
+                    <input type="text" placeholder="Code Postal" ng-model="data.cp">
+                </label>
+                <button class="button button-block button-calm ink" data-ink-color="#9DEAFF" data-ink-opacity="1" ng-click="update(data)">
+                    Modifier
+                </button>
+            </div>
+        </div>
+
+         <div ng-hide="pannels[3]">
+            <h4 class="content padding double-padding-x">Chat d'équipe</h4>
         </div>
     </ion-content>
 </ion-view>

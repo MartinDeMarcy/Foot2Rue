@@ -3,7 +3,7 @@
 
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $ionicPopover, $timeout, $state) {
+.controller('AppCtrl', function($scope, $ionicModal, $ionicPopover, $timeout, $state, userSrv) {
     // Form data for the login modal
     $scope.loginData = {};
     $scope.isExpanded = false;
@@ -22,12 +22,7 @@ angular.module('starter.controllers', [])
     ////////////////////////////////////////
 
     $scope.signOut = function() {
-        firebase.auth().signOut().then(function() {
-          console.log("Signed out");
-          $state.go("login");
-        }, function(error) {
-          console.log("Error on signOut")
-        });
+        userSrv.logout();
     };
 
     $scope.hideNavBar = function() {
@@ -96,84 +91,33 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('LoginCtrl', function($scope, $timeout, $stateParams, ionicMaterialInk, $state) {
+.controller('LoginCtrl', function($scope, userSrv) {
 
     $scope.login = function(data) {
-        firebase.auth().signInWithEmailAndPassword(data.email, data.password).then(function () {
-            $state.go('app.profile');
-        }).catch(function(error) {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          alert(error.message);
-        });
+        userSrv.login(data);
     };
 
     $scope.signWithGoogle = function() {
-        var provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider).then(function(result) {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          var token = result.credential.accessToken;
-          // The signed-in user info.
-          var user = result.user;
-          console.log(user);
-          $state.go('app.profile');
-          // ...
-        }).catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // The email of the user's account used.
-          var email = error.email;
-          // The firebase.auth.AuthCredential type that was used.
-          var credential = error.credential;
-          // ...
-        });
+        console.log("Building");
     };
 
 })
 
-.controller('RegisterCtrl', function($scope, $timeout, $stateParams, ionicMaterialInk, $state) {
+.controller('RegisterCtrl', function($scope, userSrv) {
+    $scope.user = {nick: "", city: "", cp: ""};
+
     $scope.create = function(user) {
-        if (user.email) {
-            firebase.auth().createUserWithEmailAndPassword(user.email, user.password).then(function() {
-                var userId = firebase.auth().currentUser.uid;
-                localStorage.setItem('profile', JSON.stringify(user));
-                firebase.database().ref('users/' + userId).set({
-                    id: userId,
-                    last_name: user.last_name,
-                    first_name: user.first_name,
-                    nick: user.nick,
-                    email: user.email,
-                    city: user.city,
-                    cp: user.cp
-                });
-                $state.go('login');
-            }).catch(function(error) {
-              var errorCode = error.code;
-              var errorMessage = error.message;
-              console.log(error);
-            });
-        }
-        else {
-            console.log("error");
-        }
+        userSrv.register(user);
     };
 })
 
-.controller('FriendsCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion) {
+.controller('FriendsCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion, userSrv) {
     // Set Header
-    $scope.users = [];
-    var dbRef = firebase.database().ref('users');
-    dbRef.on('value', function(snap) {
-        angular.forEach(snap.val(), function(value, key) {
-            var content = value;
-            $scope.users.push(content);
-        });
+    userSrv.getAllUserInfos(function(all) {
+        $scope.users = all;
     });
-    
+
     $scope.$parent.showHeader();
-    $scope.$parent.clearFabs();
-    $scope.$parent.setHeaderFab('left');
 
     // Delay expansion
     $timeout(function() {
@@ -188,70 +132,76 @@ angular.module('starter.controllers', [])
     ionicMaterialInk.displayEffect();
 })
 
-.controller('ProfileCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
-    // Set Header
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        var dbRef = firebase.database().ref('users/' + user.uid);
-        dbRef.on('value', function(snap) {
-            $scope.data = snap.val();
+.controller('ProfileCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk, userSrv) {
+
+    $scope.changeView = function(index) {
+        $scope.pannels = [true, true, true, true];
+        $scope.pannels[index] = false;
+    };
+
+    $scope.update = function(data) {
+        userSrv.update(data);
+    };
+    
+     userSrv.getUserInfos(function(infos) {
+        $scope.data = infos;
+        userSrv.getUserPhoto($scope.data.id, function(url) {
+            document.querySelector('img').src = url;
         });
-        $scope.$parent.showHeader();
-        $scope.$parent.clearFabs();
-        $scope.isExpanded = false;
-        $scope.$parent.setExpanded(false);
-        $scope.$parent.setHeaderFab(false);
-
-        // Set Motion
-        $timeout(function() {
-            ionicMaterialMotion.slideUp({
-                selector: '.slide-up'
-            });
-        }, 300);
-
-        $timeout(function() {
-            ionicMaterialMotion.fadeSlideInRight({
-                startVelocity: 3000
-            });
-        }, 700);
-
-        // Set Ink
-        ionicMaterialInk.displayEffect();
-      }
     });
+
+
+
+    $scope.changeView(1);
+    $scope.isExpanded = false;
+    $scope.$parent.setExpanded(false);
+    // Set Motion
+    $timeout(function() {
+        ionicMaterialMotion.slideUp({
+            selector: '.slide-up'
+        });
+    }, 300);
+
+    $timeout(function() {
+        ionicMaterialMotion.fadeSlideInRight({
+            startVelocity: 3000
+        });
+    }, 700);
+
+    // Set Ink
+    ionicMaterialInk.displayEffect();
     
 })
 
-.controller('PlayerCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        var dbRef = firebase.database().ref('users/' + $stateParams.playerId);
-        dbRef.on('value', function(snap) {
-            $scope.data = snap.val();
+.controller('PlayerCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk, userSrv) {
+
+    userSrv.getUserInfosById($stateParams.playerId, function(infos) {
+        $scope.data = infos;
+        userSrv.getUserPhoto($stateParams.playerId, function(url) {
+            document.querySelector('img').src = url;
         });
-        $scope.$parent.showHeader();
-        $scope.$parent.clearFabs();
-        $scope.isExpanded = false;
-        $scope.$parent.setExpanded(false);
-        $scope.$parent.setHeaderFab(false);
-
-        // Set Motion
-        $timeout(function() {
-            ionicMaterialMotion.slideUp({
-                selector: '.slide-up'
-            });
-        }, 300);
-
-        $timeout(function() {
-            ionicMaterialMotion.fadeSlideInRight({
-                startVelocity: 3000
-            });
-        }, 700);
-
-        // Set Ink
-        ionicMaterialInk.displayEffect();
-        }
     });
+    $scope.$parent.showHeader();
+    $scope.$parent.clearFabs();
+    $scope.isExpanded = false;
+    $scope.$parent.setExpanded(false);
+    $scope.$parent.setHeaderFab(false);
+
+    // Set Motion
+    $timeout(function() {
+        ionicMaterialMotion.slideUp({
+            selector: '.slide-up'
+        });
+    }, 300);
+
+    $timeout(function() {
+        ionicMaterialMotion.fadeSlideInRight({
+            startVelocity: 3000
+        });
+    }, 700);
+
+    // Set Ink
+    ionicMaterialInk.displayEffect();
 })
 
 .controller('ActivityCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
