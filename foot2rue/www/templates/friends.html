@@ -7,7 +7,7 @@
         <div class="content has-header">
             <div class="list" ng-repeat="user in users">
                 <a ui-sref="app.player({playerId: user.id})" class="item item-avatar item-icon-right">
-                    <img ng-src="https://firebasestorage.googleapis.com/v0/b/foot2rue-2c890.appspot.com/o/profil%2FuwmLTU8ZRpaJfU0tE1hdWDzzUkV2?alt=media&token=6f1b8a11-aa25-4808-a583-6345d906ae96">
+                    <img src="" ng-attr-id="{{ user.id}} " class="photoFriend">
                     <h2>{{ user.first_name }} {{ user.last_name }}</h2>
                     <p>{{ user.nick }}</p> 
                     <i class="icon ion-plus"></i>

@@ -22,7 +22,8 @@ angular.module('app.services.userSrv', [])
 		                    nick: user.nick,
 		                    email: user.email,
 		                    city: user.city,
-		                    cp: user.cp
+		                    cp: user.cp,
+		                    team_id: 0
 		                });
 		                if (angular.isDefined(file))
 		                {
@@ -191,9 +192,6 @@ angular.module('app.services.userSrv', [])
 				    dbRef.on('value', function(snap) {
 				    	var all = [];
 				        angular.forEach(snap.val(), function(value, key) {
-				        	/*this.getUserPhoto(value.id, function(url) {
-				        		console.log(url);
-				        	});*/
 				            all.push(value);
 				        });
 				        callback(all);

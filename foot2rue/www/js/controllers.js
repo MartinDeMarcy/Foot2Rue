@@ -17,10 +17,6 @@ angular.module('starter.controllers', [])
         });
     }
 
-    ////////////////////////////////////////
-    // Layout Methods
-    ////////////////////////////////////////
-
     $scope.signOut = function() {
         userSrv.logout();
     };
@@ -114,6 +110,17 @@ angular.module('starter.controllers', [])
 .controller('FriendsCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion, userSrv) {
     // Set Header
     userSrv.getAllUserInfos(function(all) {
+        angular.forEach(all, function(value, key) {
+            userSrv.getUserPhoto(value.id, function(url) {
+                //console.log(angular.element(document).find('img'));
+                angular.forEach(angular.element(document).find('img'), function(attribut, cle) {
+                    if (value.id == attribut.id)
+                    {
+                        attribut.src = url;
+                    }
+                });
+            });
+        });
         $scope.users = all;
     });
 
@@ -139,6 +146,14 @@ angular.module('starter.controllers', [])
         userSrv.getUserPhoto($scope.data.id, function(url) {
             document.querySelector('.imgProfil').src = url;
         });
+        if (infos.team_id != 0)
+        {
+
+        }
+        else
+        {
+            $scope.teamDisplay = true;
+        }
     });
 
     $scope.changeView = function(index) {
