@@ -134,6 +134,13 @@ angular.module('starter.controllers', [])
 
 .controller('ProfileCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk, userSrv) {
 
+    userSrv.getUserInfos(function(infos) {
+        $scope.data = infos;
+        userSrv.getUserPhoto($scope.data.id, function(url) {
+            document.querySelector('.imgProfil').src = url;
+        });
+    });
+
     $scope.changeView = function(index) {
         $scope.pannels = [true, true, true, true];
         $scope.pannels[index] = false;
@@ -142,15 +149,6 @@ angular.module('starter.controllers', [])
     $scope.update = function(data) {
         userSrv.update(data);
     };
-    
-     userSrv.getUserInfos(function(infos) {
-        $scope.data = infos;
-        userSrv.getUserPhoto($scope.data.id, function(url) {
-            document.querySelector('img').src = url;
-        });
-    });
-
-
 
     $scope.changeView(1);
     $scope.isExpanded = false;
@@ -178,7 +176,7 @@ angular.module('starter.controllers', [])
     userSrv.getUserInfosById($stateParams.playerId, function(infos) {
         $scope.data = infos;
         userSrv.getUserPhoto($stateParams.playerId, function(url) {
-            document.querySelector('img').src = url;
+            document.querySelector('.imgProfil').src = url;
         });
     });
     $scope.$parent.showHeader();
