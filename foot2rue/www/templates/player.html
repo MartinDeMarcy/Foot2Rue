@@ -8,7 +8,7 @@
             </div>
         </div>
         <h4 class="content padding double-padding-x">Formation</h4>
-        <div class="list animate-fade-slide-in-right">
+        <div ng-hide="teamDisplay" class="list animate-fade-slide-in-right">
             <a ui-sref="app.friends" class="item item-avatar item-icon-right">
                 <img src="img/jon-snow.jpg">
                 <h2>Jon Snow</h2>
@@ -24,6 +24,9 @@
                 <h2>Tyrion Lannister</h2>
                 <p>B.A.M.F. imp</p>
             </a>
+        </div>
+        <div ng-show="teamDisplay" class="list animate-fade-slide-in-right teamDisplay">
+            Ce joueur n'est pas dans une équipe.
         </div>
     </ion-content>
 </ion-view>

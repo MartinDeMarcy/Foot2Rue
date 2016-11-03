@@ -58,6 +58,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
         }
     })
 
+    .state('app.teamCreation', {
+        url: '/team/creation',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/team_creation.html',
+                controller: 'teamCreationCtrl'
+            }
+        }
+    })
+
     .state('app.gallery', {
         url: '/gallery',
         views: {

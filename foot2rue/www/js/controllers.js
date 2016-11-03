@@ -148,7 +148,7 @@ angular.module('starter.controllers', [])
         });
         if (infos.team_id != 0)
         {
-
+            $scope.teamDisplay = false;
         }
         else
         {
@@ -190,6 +190,14 @@ angular.module('starter.controllers', [])
 
     userSrv.getUserInfosById($stateParams.playerId, function(infos) {
         $scope.data = infos;
+        if (infos.team_id == 0)
+        {
+            $scope.teamDisplay = true;
+        }
+        else
+        {
+            $scope.teamDisplay = false;
+        }
         userSrv.getUserPhoto($stateParams.playerId, function(url) {
             document.querySelector('.imgProfil').src = url;
         });
@@ -215,6 +223,12 @@ angular.module('starter.controllers', [])
 
     // Set Ink
     ionicMaterialInk.displayEffect();
+})
+
+.controller('teamCreationCtrl', function($scope, teamSrv) {
+    $scope.create = function(team) {
+        teamSrv.create(team);
+    };
 })
 
 .controller('ActivityCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {

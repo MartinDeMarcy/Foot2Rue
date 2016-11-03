@@ -1,6 +1,6 @@
 'use strict';
 
 angular.module('app.services', [     
-    'app.services.photoSrv',
+    'app.services.teamSrv',
     'app.services.userSrv'
 ]);

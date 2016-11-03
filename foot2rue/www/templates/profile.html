@@ -22,22 +22,31 @@
             </a>
         </div>
 
-         <div ng-hide="pannels[0]">
+         <div ng-hide="pannels[0]" class="pannelProfil">
             <h4 class="content padding double-padding-x">Gestion de l'équipe</h4>
         </div>
 
-        <div ng-hide="pannels[1]">
+        <div ng-hide="pannels[1]" class="pannelProfil">
             <h4 class="content padding double-padding-x">Formation</h4>
-            <div class="list animate-fade-slide-in-right">
+            <div ng-hide="teamDisplay" class="list animate-fade-slide-in-right">
                 <a ui-sref="app.friends" class="item item-avatar item-icon-right">
                     <img src="img/jon-snow.jpg">
                     <h2>Jon Snow</h2>
                     <p>Da illest illegitimate</p>
                 </a>
             </div>
+            <div ng-show="teamDisplay">
+                <p>Vous n'apartenez à acune équipe pour le moment.</p>
+                <button class="button button-block button-calm ink" data-ink-color="#9DEAFF" data-ink-opacity="1" ng-click="update(data)">
+                    Rejoindre une équipe
+                </button>
+                <button ui-sref="app.teamCreation" class="button button-block button-balanced ink" data-ink-color="#9DEAFF" data-ink-opacity="1" ng-click="update(data)">
+                    Créer une équipe
+                </button>
+            </div>
         </div>
 
-        <div ng-hide="pannels[2]">
+        <div ng-hide="pannels[2]" class="pannelProfil">
             <h4 class="content padding double-padding-x">Paramètres du compte</h4>
             <div class="list">
                 <label class="item item-input item-floating-label">
@@ -66,7 +75,7 @@
             </div>
         </div>
 
-         <div ng-hide="pannels[3]">
+         <div ng-hide="pannels[3]" class="pannelProfil">
             <h4 class="content padding double-padding-x">Chat d'équipe</h4>
         </div>
     </ion-content>

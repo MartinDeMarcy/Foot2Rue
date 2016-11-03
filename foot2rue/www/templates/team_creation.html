@@ -1,0 +1,29 @@
+<ion-view view-title="Equipe" align-title="left">
+    <ion-content>
+        <div class="im-wrapper">
+            <!-- Ionic Components -->
+             <h4>Création de l'équipe</h4>
+            <div class="list">
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Nom de l'équipe</span>
+                    <input type="text" placeholder="Nom de l'équipe" ng-model="team.name">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Surnom</span>
+                    <input type="text" placeholder="Surnom" ng-model="team.nick">
+                </label>
+                <label class="item item-input item-floating-label">
+                    Photo de l'équipe
+                    <span class="input-label">Image de l'équipe</span>
+                    <input type="file" id="file">
+                </label>
+                <button class="button button-block button-balanced ink" data-ink-color="#9DEAFF" data-ink-opacity="1" ng-click="create(team)">
+                    Valider
+                </button>
+                <button ui-sref="login" class="button button-block button-assertive ink" data-ink-color="#9DEAFF" data-ink-opacity="1">
+                    Retour
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
