@@ -135,7 +135,16 @@ angular.module('starter.controllers', [])
         teamSrv.getTeamPhoto($stateParams.teamId).then(function(url) {
             $scope.backgroundUrl = url;
         });
-        
+        userSrv.getUserInfos().then(function(user) {
+            if (user.team_id == 0)
+            {
+                $scope.request = false;
+            }
+            else
+            {
+                $scope.request = true;
+            }
+        })
     });
 })
 
@@ -177,13 +186,13 @@ angular.module('starter.controllers', [])
         $scope.$parent.showHeader();
 
         // Delay expansion
-        /*$timeout(function() {
+        $timeout(function() {
             $scope.isExpanded = true;
             $scope.$parent.setExpanded(true);
-        }, 300);*/
+        }, 300);
 
-        // Set Motion
-        ionicMaterialMotion.fadeSlideInRight();
+        /*// Set Motion
+        ionicMaterialMotion.fadeSlideInRight();*/
 
         // Set Ink
         ionicMaterialInk.displayEffect();
@@ -193,7 +202,7 @@ angular.module('starter.controllers', [])
 .controller('ProfileCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk, userSrv, teamSrv) {
 
     $scope.$on('$ionicView.enter', function () {
-        userSrv.getUserInfos(function(infos) {
+        userSrv.getUserInfos().then(function(infos) {
             $scope.data = infos;
             $scope.players = [];
             userSrv.getUserPhoto(infos.id).then(function(url) {
@@ -202,6 +211,11 @@ angular.module('starter.controllers', [])
             if (infos.team_id != 0)
             {
                 teamSrv.getTeamByUser(infos).then(function(team) {
+                    $scope.team = team;
+                    if (team.captain == infos.id)
+                    {
+                        $scope.isCaptain = true;
+                    }
                     angular.forEach(team.players, function(value, key) {
                         if (value != 0)
                         {
@@ -226,6 +240,7 @@ angular.module('starter.controllers', [])
             }
             else
             {
+                $scope.isCaptain = false;
                 $scope.teamDisplay = true;
                 $scope.backgroundUrl = "https://firebasestorage.googleapis.com/v0/b/foot2rue-2c890.appspot.com/o/red-geometrical-background_1085-125.jpg?alt=media&token=b24107a4-3289-42ad-b3ca-3405213aa351";
             }

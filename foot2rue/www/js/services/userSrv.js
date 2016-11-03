@@ -167,16 +167,18 @@ angular.module('app.services.userSrv', [])
 	        return deferred.promise;
 		},
 
-		getUserInfos: function(callback) {
+		getUserInfos: function() {
+			var deferred = $q.defer();
 			this.isSigned(function(user) {
 				if (user)
 				{
 					var dbRef = firebase.database().ref('users/' + user.uid);
 			        dbRef.on('value', function(snap) {
-			            callback(snap.val());
+			            deferred.resolve(snap.val());
 			        });
 				}
 		    });
+		    return deferred.promise;
 		},
 
 		getUserInfosById: function(id) {

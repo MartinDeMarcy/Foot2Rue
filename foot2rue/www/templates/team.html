@@ -1,5 +1,5 @@
 <ion-view view-title="{{ data.name }}">
-    <ion-content>
+    <ion-content ng-class="{expanded:$scope.isExpanded}">
         <div class="hero" ng-style="{'background-image':'url(' + backgroundUrl + ')'}">
             <div class="content">
                 <h3><a class="light">{{ data.name}}</a></h3>
@@ -16,6 +16,11 @@
                     <p>{{ user.nick }}</p> 
                 </a>
             </div>
+        </div>
+        <div ng-hide="request" class="content has-header">
+            <button class="button button-block button-balanced ink" data-ink-color="#9DEAFF" data-ink-opacity="1">
+                Demander à rejoindre cette équipe
+            </button>
         </div>
     </ion-content>
 </ion-view>

@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="tabs tabs-dark tabs-icon-top static">
-            <a ng-hide="teamDisplay" ng-click="changeView(0)" class="tab-item capitaine">
+            <a ng-show="isCaptain" ng-click="changeView(0)" class="tab-item capitaine">
                 <i class="icon ion-arrow-graph-up-right"></i> Gestion de l'équipe
             </a>
             <a ng-click="changeView(1)" class="tab-item">
@@ -27,9 +27,10 @@
         </div>
 
         <div ng-hide="pannels[1]" class="pannelProfil">
-            <h4 class="content padding double-padding-x">Formation</h4>
+            <h4 ng-hide="teamDisplay" class="content padding double-padding-x">Formation - {{ team.name }}</h4>
+            <h4 ng-show="teamDisplay" class="content padding double-padding-x">Formation</h4>
 
-            <div class="content has-header">
+            <div ng-hide="teamDisplay" class="content has-header">
                 <div class="list" ng-repeat="user in players">
                     <a ui-sref="app.player({playerId: user.id})" class="item item-avatar item-icon-right">
                         <img src="" ng-attr-id="{{ user.id}} " class="photoFriend">
@@ -41,7 +42,7 @@
 
             <div ng-show="teamDisplay">
                 <p>Vous n'apartenez à acune équipe pour le moment.</p>
-                <button class="button button-block button-calm ink" data-ink-color="#9DEAFF" data-ink-opacity="1" ng-click="update(data)">
+                <button ui-sref="app.teams" class="button button-block button-calm ink" data-ink-color="#9DEAFF" data-ink-opacity="1">
                     Rejoindre une équipe
                 </button>
                 <button ui-sref="app.teamCreation" class="button button-block button-balanced ink" data-ink-color="#9DEAFF" data-ink-opacity="1" ng-click="update(data)">
