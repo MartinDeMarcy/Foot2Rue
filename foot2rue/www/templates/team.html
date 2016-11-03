@@ -1,0 +1,21 @@
+<ion-view view-title="{{ data.name }}">
+    <ion-content>
+        <div class="hero" ng-style="{'background-image':'url(' + backgroundUrl + ')'}">
+            <div class="content">
+                <h3><a class="light">{{ data.name}}</a></h3>
+                <h4>{{ data.nick }}</h4>
+            </div>
+        </div>
+        <h4 class="content padding double-padding-x">Formation</h4>
+
+        <div class="content has-header">
+            <div class="list" ng-repeat="user in players">
+                <a ui-sref="app.player({playerId: user.id})" class="item item-avatar item-icon-right">
+                    <img src="" ng-attr-id="{{ user.id}} " class="photoFriend">
+                    <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                    <p>{{ user.nick }}</p> 
+                </a>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

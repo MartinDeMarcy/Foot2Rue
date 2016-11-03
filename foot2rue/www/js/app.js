@@ -58,6 +58,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
         }
     })
 
+    .state('app.teams', {
+        url: '/teams',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/teams.html',
+                controller: 'TeamsCtrl'
+            }
+        }
+    })
+
     .state('app.teamCreation', {
         url: '/team/creation',
         views: {
@@ -88,6 +98,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
         url: '/register',
         templateUrl: 'templates/register.html',
         controller: 'RegisterCtrl'
+    })
+
+    .state('app.team', {
+        url: "/team/:teamId",
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/team.html',
+                controller: 'TeamCtrl'
+            }
+        }
     })
     
     .state('app.player', {

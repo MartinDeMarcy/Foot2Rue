@@ -1,0 +1,17 @@
+<ion-view view-title="Equipes">
+    <ion-content ng-class="{expanded:isExpanded}">
+        <label class="item item-input">
+            <i class="icon ion-search placeholder-icon"></i>
+            <input type="search" placeholder="Rechercher une équipe">
+        </label>
+        <div class="content has-header">
+            <div class="list" ng-repeat="team in teams">
+                <a ui-sref="app.team({teamId: team.id})" class="item item-avatar item-icon-right">
+                    <img src="" ng-attr-id="{{ team.id}} " class="photoFriend">
+                    <h2>{{ team.name }}</h2>
+                    <p>{{ team.nick }}</p> 
+                </a>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

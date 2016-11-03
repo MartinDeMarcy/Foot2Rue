@@ -1,14 +1,14 @@
 <ion-view view-title="Vue d'ensemble">
     <ion-content ng-class="{expanded:$scope.isExpanded}">
-        <div class="hero slide-up" style="background-image: url('img/profile-bg.jpg');">
+        <div class="hero slide-up" ng-style="{'background-image':'url('+backgroundUrl+')'}">
             <div class="content">
-                <div class="avatar"><img ng-src="" alt="photo de profile" class="imgProfil"></div>
+                <div class="avatar"><img src="" alt="photo de profile" class="imgProfil"></div>
                 <h3><a class="light">{{ data.first_name}} {{ data.last_name }}</a></h3>
                 <h4>{{ data.nick }}</h4>
             </div>
         </div>
         <div class="tabs tabs-dark tabs-icon-top static">
-            <a ng-click="changeView(0)" class="tab-item capitaine">
+            <a ng-hide="teamDisplay" ng-click="changeView(0)" class="tab-item capitaine">
                 <i class="icon ion-arrow-graph-up-right"></i> Gestion de l'équipe
             </a>
             <a ng-click="changeView(1)" class="tab-item">
@@ -28,13 +28,17 @@
 
         <div ng-hide="pannels[1]" class="pannelProfil">
             <h4 class="content padding double-padding-x">Formation</h4>
-            <div ng-hide="teamDisplay" class="list animate-fade-slide-in-right">
-                <a ui-sref="app.friends" class="item item-avatar item-icon-right">
-                    <img src="img/jon-snow.jpg">
-                    <h2>Jon Snow</h2>
-                    <p>Da illest illegitimate</p>
-                </a>
+
+            <div class="content has-header">
+                <div class="list" ng-repeat="user in players">
+                    <a ui-sref="app.player({playerId: user.id})" class="item item-avatar item-icon-right">
+                        <img src="" ng-attr-id="{{ user.id}} " class="photoFriend">
+                        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                        <p>{{ user.nick }}</p> 
+                    </a>
+                </div>
             </div>
+
             <div ng-show="teamDisplay">
                 <p>Vous n'apartenez à acune équipe pour le moment.</p>
                 <button class="button button-block button-calm ink" data-ink-color="#9DEAFF" data-ink-opacity="1" ng-click="update(data)">

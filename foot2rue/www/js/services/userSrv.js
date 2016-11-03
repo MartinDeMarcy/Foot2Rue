@@ -2,8 +2,7 @@
 
 angular.module('app.services.userSrv', [])
 
-.factory('userSrv', function($state){
-
+.factory('userSrv', function($state, $q){
 	return {
 		register: function(user) {
 			var errorMsg;
@@ -14,7 +13,6 @@ angular.module('app.services.userSrv', [])
 					firebase.auth().createUserWithEmailAndPassword(user.email, user.password).then(function() {
 		                var userId = firebase.auth().currentUser.uid;
 		                var file = document.getElementById('file').files[0];
-		                localStorage.setItem('profile', JSON.stringify(user));
 		                firebase.database().ref('users/' + userId).set({
 		                    id: userId,
 		                    last_name: user.last_name,
@@ -138,13 +136,15 @@ angular.module('app.services.userSrv', [])
 			});
 		},
 
-		getUserPhoto: function(id, callback) {
+		getUserPhoto: function(id) {
+			var deferred = $q.defer();
 			var pathPhoto = "profil/" + id;
 	        var imgRef = firebase.storage().ref().child(pathPhoto);
 
 	        imgRef.getDownloadURL().then(function(url) 
 	        {
-	            callback(url);
+	            //callback(url);
+	            deferred.resolve(url);
 	        }).catch(function(error) 
 	        {
 	            switch (error.code) 
@@ -161,8 +161,10 @@ angular.module('app.services.userSrv', [])
 	                case 'storage/unknown':
 	                    break;
 	            }
+	            deferred.reject(error);
 	            console.log(error);
 	        });
+	        return deferred.promise;
 		},
 
 		getUserInfos: function(callback) {
@@ -177,11 +179,13 @@ angular.module('app.services.userSrv', [])
 		    });
 		},
 
-		getUserInfosById: function(id, callback) {
+		getUserInfosById: function(id) {
+			var deferred = $q.defer();
 			var dbRef = firebase.database().ref('users/' + id);
 	        dbRef.on('value', function(snap) {
-	            callback(snap.val());
+	            deferred.resolve(snap.val());
 	        });
+	        return deferred.promise;
 		},
 
 		getAllUserInfos: function(callback) {

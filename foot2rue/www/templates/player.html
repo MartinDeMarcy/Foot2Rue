@@ -1,29 +1,24 @@
 <ion-view view-title="Aperçu">
     <ion-content ng-class="{expanded:$scope.isExpanded}">
-        <div class="hero slide-up" style="background-image: url('img/profile-bg.jpg');">
+        <div class="hero slide-up" ng-style="{'background-image':'url('+backgroundUrl+')'}">
             <div class="content">
-                <div class="avatar"><img src="" alt="photo de profile" class="imgProfil"></div>
+                <div class="avatar"><img ng-src="" alt="photo de profile" class="imgProfil"></div>
                 <h3><a class="light">{{ data.first_name}} {{ data.last_name }}</a></h3>
                 <h4>{{ data.nick }}</h4>
             </div>
         </div>
-        <h4 class="content padding double-padding-x">Formation</h4>
-        <div ng-hide="teamDisplay" class="list animate-fade-slide-in-right">
-            <a ui-sref="app.friends" class="item item-avatar item-icon-right">
-                <img src="img/jon-snow.jpg">
-                <h2>Jon Snow</h2>
-                <p>Da illest illegitimate</p>
-            </a>
-            <a ui-sref="app.friends" class="item item-avatar item-icon-right">
-                <img src="img/sansa.jpg">
-                <h2>Sansa Stark</h2>
-                <p>&amp; Joffrey <strike>sitting</strike> sat in a tree</p>
-            </a>
-            <a ui-sref="app.friends" class="item item-avatar item-icon-right">
-                <img src="img/tyrion.jpg">
-                <h2>Tyrion Lannister</h2>
-                <p>B.A.M.F. imp</p>
-            </a>
+        <div ng-hide="teamDisplay">
+            <h4 class="content padding double-padding-x">Formation</h4>
+
+            <div class="content has-header">
+                <div class="list" ng-repeat="user in players">
+                    <a ui-sref="app.player({playerId: user.id})" class="item item-avatar item-icon-right">
+                        <img src="" ng-attr-id="{{ user.id}} " class="photoFriend">
+                        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                        <p>{{ user.nick }}</p> 
+                    </a>
+                </div>
+            </div>
         </div>
         <div ng-show="teamDisplay" class="list animate-fade-slide-in-right teamDisplay">
             Ce joueur n'est pas dans une équipe.
