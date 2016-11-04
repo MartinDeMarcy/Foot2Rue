@@ -251,6 +251,10 @@ angular.module('starter.controllers', [])
             $scope.pannels[index] = false;
         };
 
+        $scope.leave = function(team) {
+            teamSrv.leaveTeam(team);
+        };
+
         $scope.update = function(data) {
             userSrv.update(data);
         };

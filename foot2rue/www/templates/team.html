@@ -1,5 +1,5 @@
 <ion-view view-title="{{ data.name }}">
-    <ion-content ng-class="{expanded:$scope.isExpanded}">
+    <ion-content ng-class="{expanded:isExpanded}">
         <div class="hero" ng-style="{'background-image':'url(' + backgroundUrl + ')'}">
             <div class="content">
                 <h3><a class="light">{{ data.name}}</a></h3>
@@ -13,6 +13,7 @@
                 <a ui-sref="app.player({playerId: user.id})" class="item item-avatar item-icon-right">
                     <img src="" ng-attr-id="{{ user.id}} " class="photoFriend">
                     <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                    <span ng-if="data.captain == user.id">Capitain</span>
                     <p>{{ user.nick }}</p> 
                 </a>
             </div>

@@ -104,6 +104,27 @@ angular.module('app.services.teamSrv', [])
 				});
 			},
 
+			leaveTeam: function(team) {
+				console.log(team.players);
+				var tab = [];
+				userSrv.isSigned(function(user) {
+					if (user)
+					{
+						angular.forEach(team.players, function(value, key) {
+							if (value == user.uid) {
+								tab[key] = 0;
+							}
+							else {
+								tab[key] = value;	
+							}
+						})
+						console.log(tab);
+						/*firebase.database().ref('teams/' + team.id).update({
+							players: tab
+						});*/
+					}
+				});
+			}
 			
 
 		}

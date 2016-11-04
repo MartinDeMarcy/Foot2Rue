@@ -77,6 +77,12 @@
                 <button class="button button-block button-calm ink" data-ink-color="#9DEAFF" data-ink-opacity="1" ng-click="update(data)">
                     Modifier
                 </button>
+                <div ng-hide="isCaptain">
+                    <h4 class="content padding double-padding-x">Equipe</h4>
+                    <button class="button button-block button-assertive ink" data-ink-color="#9DEAFF" data-ink-opacity="1" ng-click="leave(team)">
+                        Quitter {{ team.name }}
+                    </button>
+                </div>
             </div>
         </div>
 
