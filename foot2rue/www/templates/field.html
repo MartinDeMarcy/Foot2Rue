@@ -1,0 +1,13 @@
+<ion-view view-title="{{ data.name }}">
+    <ion-content ng-class="{expanded:isExpanded}">
+        <div class="hero" ng-style="{'background-image':'url(' + backgroundUrl + ')'}">
+            <div class="content">
+                <h3><a class="light">{{ data.name}}</a></h3>
+                <h4>{{ data.location }}</h4>
+            </div>
+        </div>
+        <h4 class="content padding double-padding-x">Informations</h4>
+        <div class="content has-header">
+        </div>
+    </ion-content>
+</ion-view>

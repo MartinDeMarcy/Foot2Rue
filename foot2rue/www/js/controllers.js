@@ -109,6 +109,25 @@ angular.module('starter.controllers', [])
     });
 })
 
+.controller('FieldCtrl', function($scope, $stateParams, fieldSrv) {
+    $scope.$on('$ionicView.enter', function () {
+
+    });
+})
+
+.controller('FieldsCtrl', function($scope, ionicMaterialMotion, fieldSrv) {
+    $scope.$on('$ionicView.enter', function () {
+        ionicMaterialMotion.fadeSlideInRight({
+            selector: '.animate-fade-slide-in .item'
+        });
+        fieldSrv.getAllFields().then(function(data) {
+            console.log(data);
+            $scope.fields = data;
+        });
+            console.log($scope.fields);
+    });
+})
+
 .controller('TeamCtrl', function($scope, $stateParams, teamSrv, userSrv) {
     $scope.$on('$ionicView.enter', function () {
         teamSrv.getTeamById($stateParams.teamId).then(function(data) {
@@ -136,15 +155,28 @@ angular.module('starter.controllers', [])
             $scope.backgroundUrl = url;
         });
         userSrv.getUserInfos().then(function(user) {
-            if (user.team_id == 0)
+            if (user.team_id == 0 && user.team_ask != $scope.data.id)
             {
                 $scope.request = false;
+                $scope.asked = true;
+            }
+            else if (user.team_ask == $scope.data.id)
+            {
+                $scope.request = true;
+                $scope.asked = false;
             }
             else
             {
                 $scope.request = true;
+                $scope.asked = true;
             }
         })
+
+        $scope.ask = function(teamId) {
+            userSrv.askTeam(teamId);
+            $scope.request = true;
+            $scope.asked = false;
+        };
     });
 })
 
@@ -354,22 +386,11 @@ angular.module('starter.controllers', [])
     });
 })
 
-.controller('ActivityCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
+.controller('FieldCreationCtrl', function($scope, fieldSrv) {
     $scope.$on('$ionicView.enter', function () {
-        $scope.$parent.showHeader();
-        $scope.$parent.clearFabs();
-        $scope.isExpanded = true;
-        $scope.$parent.setExpanded(true);
-        $scope.$parent.setHeaderFab('right');
-
-        $timeout(function() {
-            ionicMaterialMotion.fadeSlideIn({
-                selector: '.animate-fade-slide-in .item'
-            });
-        }, 200);
-
-        // Activate ink for controller
-        ionicMaterialInk.displayEffect();
+        $scope.create = function(field) {
+            fieldSrv.create(field);
+        };
     });
 })
 

@@ -78,12 +78,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
         }
     })
 
-    .state('app.gallery', {
-        url: '/gallery',
+    .state('app.fields', {
+        url: '/fields',
         views: {
             'menuContent': {
-                templateUrl: 'templates/gallery.html',
-                controller: 'GalleryCtrl'
+                templateUrl: 'templates/fields.html',
+                controller: 'FieldsCtrl'
+            }
+        }
+    })
+
+    .state('app.fieldCreation', {
+        url: '/field/creation',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/field_creation.html',
+                controller: 'FieldCreationCtrl'
             }
         }
     })
@@ -98,6 +108,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
         url: '/register',
         templateUrl: 'templates/register.html',
         controller: 'RegisterCtrl'
+    })
+
+    .state('app.field', {
+        url: "/field/:fieldId",
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/field.html',
+                controller: 'FieldCtrl'
+            }
+        }
     })
 
     .state('app.team', {

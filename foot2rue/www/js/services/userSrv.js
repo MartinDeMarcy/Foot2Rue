@@ -204,7 +204,18 @@ angular.module('app.services.userSrv', [])
 				    });
 				}
 		    });
-		}
+		},
+
+		askTeam: function(teamId) {
+				this.isSigned(function(user) {
+				if (user)
+				{
+					firebase.database().ref('users/' + user.uid).update({
+	                    team_ask: teamId
+		            });
+				}
+		    });
+		}	
 
 	}
 });

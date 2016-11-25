@@ -13,14 +13,19 @@
                 <a ui-sref="app.player({playerId: user.id})" class="item item-avatar item-icon-right">
                     <img src="" ng-attr-id="{{ user.id}} " class="photoFriend">
                     <h2>{{ user.first_name }} {{ user.last_name }}</h2>
-                    <span ng-if="data.captain == user.id">Capitain</span>
+                    <span ng-if="data.captain == user.id">Capitaine</span>
                     <p>{{ user.nick }}</p> 
                 </a>
             </div>
         </div>
         <div ng-hide="request" class="content has-header">
-            <button class="button button-block button-balanced ink" data-ink-color="#9DEAFF" data-ink-opacity="1">
+            <button class="button button-block button-balanced ink" data-ink-color="#9DEAFF" data-ink-opacity="1" ng-click="ask(data.id)">
                 Demander à rejoindre cette équipe
+            </button>
+        </div>
+        <div ng-hide="asked" class="content has-header">
+            <button class="button button-block button-positive ink" data-ink-color="#9DEAFF" data-ink-opacity="1" ng-click="ask(data.id)">
+                Demmande envoyée
             </button>
         </div>
     </ion-content>
